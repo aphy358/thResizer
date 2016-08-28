@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>thResizer test</title>
+		
+		<style>
+			
+			body{
+				padding: 20px;
+				font-family: "Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif,"\5B8B\4F53";
+				font-size: 12px;
+				color: #333;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+			
+			th,td{
+		    	word-break:keep-all;
+			    white-space:nowrap;
+			    overflow:hidden;
+			    text-overflow:ellipsis;
+			   	border: 1px solid orange;
+			}
+			th{
+				font-weight:bold;
+				height: 30px;
+			}	
+			
+			.dataTable {  
+		        width: 100%;  
+		        border: none;  
+		        border-collapse: collapse;  
+		        border-spacing: 0px !important;  
+		        display: table;  
+		        table-layout:fixed;  
+		    }  
+		  
+		    .dataTable th,.dataTable td {  
+		        padding: 0px;  
+		        margin: 0px;  
+		        border: 1px solid #BEBFD3;  
+		        overflow: hidden;  
+		        white-space: nowrap;  
+		        text-overflow: ellipsis;  
+		    }  
+    
+			.th-resizing,.first-resize-th,.second-resize-th{
+				cursor: col-resize;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+
+		<table id="goodstableid" border="0" class="dataTable list-table" style="">
+			<tbody>
+				<tr class="tabble-head" id="tabble-head">
+					<th style="padding-left:15px;width: 100px;">订单号</th>
+					<th style="width: 156px;">酒店</th>
+					<th style="width: 60px;">客户</th>
+					<th style="width: 60px;">入住人</th>
+					<th style="width: 56px;">支付类型</th>
+					<th style="width: 100px;" title="入住/退房时间">入住/退房时间</th>
+					<th style="width: 65px;">房型</th>
+					<th style="width: 28px;">间数</th>
+					<th style="width: 85px;" title="客户/供应商状态">客户/供应商状态</th>
+					<th style="width: 55px;">支付状态</th>
+					<th style="width: 156px;" title="下单人/下单时间">下单人/下单时间</th>
+					<th style="width: 85px;">跟单人</th>
+					<th style="width: 80px;">单位</th>
+					<th style="width: 50px;">操作</th>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="1608250010" title=""><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="971" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> 1608250010 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="北京北辰洲际酒店" title=""> <span class="lengthFixed-100" title="北京北辰洲际酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(895)">北京北辰洲际酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="捷旅IT测试客户" title=""> 捷旅IT测试客户 </td>
+					<td class="poshytip" data-geo="" data-username="aacc" title=""> aacc </td>
+					<td class="poshytip" data-geo="" data-username="预付" title=""> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-10-05<br></td>2016-10-06" title=""> 2016-10-05<br>2016-10-06 </td>
+					<td class="poshytip" data-geo="" data-username="行政豪华房" title="">行政豪华房</td>
+					<td class="poshytip" data-geo="" data-username="1" title="">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           " title=""> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="              单结未支付        " title=""> <span class="red">单结未支付</span> </td>
+					<td class="poshytip" data-geo="" data-username="顿斌<br></td>2016-08-25 19:59" title=""> 顿斌<br>2016-08-25 19:59 </td>
+					<td class="poshytip" data-geo="" data-username="顿斌" title=""> 顿斌 </td>
+					<td> 总部 </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="971" _code="1608250010" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="1608250009" title=""><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="970" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> 1608250009 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="北京德胜门华宇假日酒店" title=""> <span class="lengthFixed-100" title="北京德胜门华宇假日酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(600)">北京德胜门华宇假日酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="捷旅IT测试客户"> 捷旅IT测试客户 </td>
+					<td class="poshytip" data-geo="" data-username="cccc2" title=""> cccc2 </td>
+					<td class="poshytip" data-geo="" data-username="预付" title=""> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-10-23<br></td>2016-10-24" title=""> 2016-10-23<br>2016-10-24 </td>
+					<td class="poshytip" data-geo="" data-username="高级房" title="">高级房</td>
+					<td class="poshytip" data-geo="" data-username="1" title="">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           " title=""> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="              单结未支付        " title=""> <span class="red">单结未支付</span> </td>
+					<td class="poshytip" data-geo="" data-username="顿斌<br></td>2016-08-25 19:22" title=""> 顿斌<br>2016-08-25 19:22 </td>
+					<td class="poshytip" data-geo="" data-username="顿斌"> 顿斌 </td>
+					<td> 总部 </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="970" _code="1608250009" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250008"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="969" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250008 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="巴厘岛泛太平洋娜湾度假村" title=""> <span class="lengthFixed-100" title="巴厘岛泛太平洋娜湾度假村"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(5)">巴厘岛泛太平洋娜湾度假村</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号" title=""> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa"> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付"> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-26<br></td>2016-08-27" title=""> 2016-08-26<br>2016-08-27 </td>
+					<td class="poshytip" data-geo="" data-username="豪华园景房" title="">豪华园景房</td>
+					<td class="poshytip" data-geo="" data-username="1">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           " title=""> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="        挂账"> <span class="red">挂账</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 16:01" title=""> 卿剑<br>2016-08-25 16:01 </td>
+					<td class="poshytip" data-geo="" data-username=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="969" _code="F1608250008" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250007"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="968" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250007 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="巴厘岛拉古娜豪华精选度假村--喜达屋集团酒店"> <span class="lengthFixed-100" title="巴厘岛拉古娜豪华精选度假村--喜达屋集团酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(4)">巴厘岛拉古娜豪华精选度假村--喜达屋集团酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号" title=""> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa"> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付"> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-26<br></td>2016-08-27" title=""> 2016-08-26<br>2016-08-27 </td>
+					<td class="poshytip" data-geo="" data-username="豪华园景房" title="">豪华园景房</td>
+					<td class="poshytip" data-geo="" data-username="1" title="">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           " title=""> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="        挂账"> <span class="red">挂账</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 15:38" title=""> 卿剑<br>2016-08-25 15:38 </td>
+					<td class="poshytip" data-geo="" data-username="" title=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="968" _code="F1608250007" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250006"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="967" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250006 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="捷旅IT测试海外酒店"> <span class="lengthFixed-100" title="捷旅IT测试海外酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(440)">捷旅IT测试海外酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号"> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa" title=""> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付" title=""> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-26<br></td>2016-08-27" title=""> 2016-08-26<br>2016-08-27 </td>
+					<td class="poshytip" data-geo="" data-username="高级房(双床)" title="">高级房(双床)</td>
+					<td class="poshytip" data-geo="" data-username="1">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           " title=""> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="        挂账" title=""> <span class="red">挂账</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 15:03" title=""> 卿剑<br>2016-08-25 15:03 </td>
+					<td class="poshytip" data-geo="" data-username=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="967" _code="F1608250006" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250005"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="966" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250005 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="捷旅IT测试海外酒店"> <span class="lengthFixed-100" title="捷旅IT测试海外酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(440)">捷旅IT测试海外酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号" title=""> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa" title=""> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付" title=""> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-26<br></td>2016-08-27" title=""> 2016-08-26<br>2016-08-27 </td>
+					<td class="poshytip" data-geo="" data-username="行政房(双床)">行政房(双床)</td>
+					<td class="poshytip" data-geo="" data-username="1">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           "> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="        挂账" title=""> <span class="red">挂账</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 15:02" title=""> 卿剑<br>2016-08-25 15:02 </td>
+					<td class="poshytip" data-geo="" data-username=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="966" _code="F1608250005" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250003"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="964" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250003 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="深圳富临酒店"> <span class="lengthFixed-100" title="深圳富临酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(74)">深圳富临酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号"> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa" title=""> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付" title=""> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-25<br></td>2016-08-26"> 2016-08-25<br>2016-08-26 </td>
+					<td class="poshytip" data-geo="" data-username="标准双床房">标准双床房</td>
+					<td class="poshytip" data-geo="" data-username="1">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           " title=""> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="        挂账" title=""> <span class="red">挂账</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 11:06" title=""> 卿剑<br>2016-08-25 11:06 </td>
+					<td class="poshytip" data-geo="" data-username=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="964" _code="F1608250003" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250002"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="963" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250002 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="巴厘岛库塔福朋喜来登酒店"> <span class="lengthFixed-100" title="巴厘岛库塔福朋喜来登酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(3)">巴厘岛库塔福朋喜来登酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号"> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa"> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付" title=""> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-26<br></td>2016-08-27" title=""> 2016-08-26<br>2016-08-27 </td>
+					<td class="poshytip" data-geo="" data-username="豪华湖景房">豪华湖景房</td>
+					<td class="poshytip" data-geo="" data-username="1">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           "> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="              单结未支付        " title=""> <span class="red">单结未支付</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 09:39"> 卿剑<br>2016-08-25 09:39 </td>
+					<td class="poshytip" data-geo="" data-username=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="963" _code="F1608250002" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+				<tr class="tabble-body" id="tabble-body" style="background: rgb(255, 255, 255);">
+					<td class="poshytip" data-geo="" data-username="F1608250001"><span style="float:left;width:8px;color:red;height:12px;left: -5px;position: relative;">           </span>
+						<a name="edit" title="" style="color:#3299d4;margin-right:0;" _id="962" href="javascript:void(0);" _href="/orderList/findOrderDetailById.do?edit=1"> F1608250001 </a>
+					</td>
+					<td class="poshytip" data-geo="" data-username="深圳海燕大酒店"> <span class="lengthFixed-100" title="深圳海燕大酒店"><a href="javascript:void(0);" onclick="javascript:gotoHotelDetailByItemId(76)">深圳海燕大酒店</a></span> </td>
+					<!--<td _tmplitem="1"  class="poshytip" data-geo="" data-username="">       </td>-->
+					<td class="poshytip" data-geo="" data-username="测试帐号"> 测试帐号 </td>
+					<td class="poshytip" data-geo="" data-username="aa"> aa </td>
+					<td class="poshytip" data-geo="" data-username="预付"> 预付 </td>
+					<td class="poshytip" data-geo="" data-username="2016-08-25<br></td>2016-08-26" title=""> 2016-08-25<br>2016-08-26 </td>
+					<td class="poshytip" data-geo="" data-username="豪华大床房">豪华大床房</td>
+					<td class="poshytip" data-geo="" data-username="1">1</td>
+					<td class="poshytip" data-geo="" data-username="待处理                                                          <br></td>     未发送供应商                                           "> <span class="ora">待处理</span> <br> <span class="ora">待处理</span> </td>
+					<td class="poshytip" data-geo="" data-username="        挂账" title=""> <span class="red">挂账</span> </td>
+					<td class="poshytip" data-geo="" data-username="卿剑<br></td>2016-08-25 09:34"> 卿剑<br>2016-08-25 09:34 </td>
+					<td class="poshytip" data-geo="" data-username=""> </td>
+					<td> </td>
+					<td>
+						<a name="info" style="color:#3299d4;" _id="962" _code="F1608250001" href="javascript:void(0);">查看</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script src="js/jquery.js"></script>
+		<script src="js/thResizer.js"></script>
+
+		<script>
+			
+			//鼠标悬停在一行上，则让该行所在房型区块用一个边框突出显示
+			$(document).ready(function(){
+				$(document).thResizer();
+
+			});
+			
+		</script>
+	</body>
+
+</html>

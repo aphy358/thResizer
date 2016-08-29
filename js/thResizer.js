@@ -9,18 +9,17 @@
 	
 	var thResizer = function ( options )
 	{
-		//这个变量用于计算函数递归调用的次数，应用场景是：我们需要确保在表格加载出来之后，再对表头注册相关的事件，
-		//所以需要每隔一段时间去尝试执行事件注册函数，直到注册上为止，或者给定次数上限，超过这个次数就不再注册，然后在控制台输出类似“time out”提示。
-		this.counter = 0;
-		
-		//对于不同页面结构，可能要通过不同的selector去定位目标对象，有时候是$("th"),有时候也可能是$(".datatable th")等等...
-		this.objStr = "th";
+		//对于不同页面结构，可能要通过不同的selector去定位目标对象，有时候是$("th"),有时候也可能是$("table.datatable th")等等...
+		this.objStr = "table.datalist th";
 		
 		//vaw表示有效区域宽度，如果设置为5，则在th与th的边界处前后5px（共10px）的区域内都可以启动战斗模式
 		this.vaw = 5;
 		
 		//fd, free distance的缩写，表示在缩放列宽的时候，预留出的一个最小列宽，即表示列宽不能小于这个值了。
 		this.fd = 15;
+		
+		//保存所有可见的列下标值
+		this.validIndexs = [];
 		
 		//resizeLB (鼠标移动的极限左值，超过这个值，则不再改变列宽)   
 		//resizeRB (鼠标移动的极限右值，超过这个值，则不再改变列宽)
@@ -46,28 +45,35 @@
 	//初始化
 	thResizer.prototype.init = function( _this )
 	{
-		//如果函数轮询次数超过60次，则退出，不再轮询。
-		if( _this.counter > 60 ){
-			console.log("fnInitMouseMove 事件绑定超时 !");
-			return;
+		if( $(_this.objStr).length > 0 && !$(_this.objStr).parent().hasClass("thResizable") && !$("body").hasClass("th-resizing") ){
+				
+			$(_this.objStr).parent().addClass("thResizable");
+			
+			_this.fnGetVisible_th( _this );				//获取所有可见列的下标
+			
+			_this.fnBindMouseEvents_th( _this );		//绑定鼠标相关事件 （mousemove、mousedown）
+		
+			_this.fnBindMouseUp_body( _this );			//绑定body的mouseup事件
+			
+			_this.fnBindMouseMove_body( _this );		//绑定body的mousemove事件
 		}
 		
-		_this.counter++;
+		//每隔500毫秒就循环执行该函数，目的是解决点击查询之后，表格变化了就不能拖拽表头改变列宽的bug
+		setTimeout(function(){
+			_this.init( _this );		//递归调用
+		},500);
+	}
+	
+	//获取所有可见列的下标
+	thResizer.prototype.fnGetVisible_th = function( _this )
+	{
+		//先清空
+		_this.validIndexs = [];
 		
-		//如果页面找不到$("th")对象，则每隔500毫秒轮询一次。
-		if( $(_this.objStr).length < 1 ){
-			
-			setTimeout(function(){
-				_this.init( _this );		//递归调用
-			},500);
-		}
-		else{
-			_this.fnBindMouseEvents_th( _this );
-			
-			_this.fnBindMouseUp_body( _this );
-			
-			_this.fnBindMouseMove_body( _this );
-		}
+		//再将所有可见列的下标存入数组
+		$.grep($(_this.objStr), function(m,j){
+			( m.style.display !== "none" ) && _this.validIndexs.push(j);
+		});
 	}
 	
 	//给表头 th 元素解除绑定 mousemove 事件
@@ -75,6 +81,14 @@
 	{
 		$(_this.objStr).each(function(i,n){
 			$(n).unbind("mousemove");
+		});
+	}
+	
+	//给表头 th 元素解除绑定 mouseleave 事件
+	thResizer.prototype.fnUnbindMouseLeave_th = function( _this )
+	{
+		$(_this.objStr).each(function(i,n){
+			$(n).unbind("mouseleave");
 		});
 	}
 		
@@ -85,25 +99,50 @@
 				
         	var rect = this.getBoundingClientRect();
         	
-        	//如果鼠标移动到第一列的前部有效区域、或者最后一列的后部有效区域，则不允许启动战斗模式
-        	if( (i == 0 && (rect.left + _this.vaw) > e.clientX) ||
-        		(i == $(_this.objStr).length - 1) && (rect.right - _this.vaw) < e.clientX ){
+        	//如果鼠标移动到第一可见列的前部有效区域、或者最后一个可见列的后部有效区域，则不允许启动战斗模式
+        	if( (i == _this.validIndexs[0] && (rect.left + _this.vaw) > e.clientX) ||
+        		(i == _this.validIndexs[_this.validIndexs.length - 1]) && (rect.right - _this.vaw) < e.clientX ){
     			return;
         	}
-        		
+    		
+    		//清空之前设置的相关标识类
 			$(this).parent().children().removeClass("first-resize-th").removeClass("second-resize-th");
-        		
-    		if( (rect.left + _this.vaw) > e.clientX ){			//当鼠标移动到th前部的有效区域时...（一个th有前后两个有效区，分别位于前部5px和后部5px的区域）
+    		
+    		//当鼠标移动到th前部的有效区域时...（一个th有前后两个有效区，分别位于前部5px和后部5px的区域）
+    		if( (rect.left + _this.vaw) > e.clientX ){
     			
+
     			//这种情形下，把当前th标记为第二个待操作元素，而将它前面一个th标记为第一个待操作元素
-    			$(this).prev().addClass("first-resize-th");
+    			//先获取它前面第一个可见列
+    			var visiblePre = $(this).prev();
+    			for( var k = 0; k < $(_this.objStr).length; k++ ){
+    				if( visiblePre.css("display") === "none" )
+    					visiblePre = visiblePre.prev();
+					else
+						break;
+    			}
+    			
+    			visiblePre.addClass("first-resize-th");
     			$(this).addClass("second-resize-th");
     		}
-    		else if( (rect.right - _this.vaw) < e.clientX ){		//当鼠标移动到th后部的有效区域时...
+    		//当鼠标移动到th后部的有效区域时...
+    		else if( (rect.right - _this.vaw) < e.clientX ){		
     			
     			//这种情形下，把当前th存储为第一个待操作元素，而将它后面一个th存储为第二个待操作元素
+    			//先获取它后面第一个可见列
+    			var visibleNext = $(this).next();
+    			for( var k = 0; k < $(_this.objStr).length; k++ ){
+    				if( visibleNext.css("display") === "none" )
+    					visibleNext = visibleNext.next();
+					else
+						break;
+    			}
+    			
     			$(this).addClass("first-resize-th");
-    			$(this).next().addClass("second-resize-th");
+    			visibleNext.addClass("second-resize-th");
+    		}
+    		else{
+    			$(this).parent().children().removeClass("first-resize-th").removeClass("second-resize-th");
     		}
       	});
 	}
@@ -122,7 +161,11 @@
       			//给所有th解除 mousemove 事件
       			_this.fnUnbindMouseMove_th( _this );
       			
-      			//计算出五个参数：1、鼠标移动的极限左值	2、鼠标移动的极限右值 	3、前后两个th的总宽度		4、第一个th的左偏移量		5、鼠标相对于第一个th右边框的距离
+      			//给所有th解除 mouseleave 事件
+      			_this.fnUnbindMouseLeave_th( _this );
+      			
+      			//计算出五个参数：1、鼠标移动的极限左值	2、鼠标移动的极限右值 	3、前后两个th的总宽度		
+  				//				 4、第一个th的左偏移量	5、鼠标相对于第一个th右边框的距离
       			var rect1 = $(".first-resize-th").get(0).getBoundingClientRect();
       			var rect2 = $(".second-resize-th").get(0).getBoundingClientRect();
       			
@@ -131,19 +174,37 @@
 				_this.resizeRB = rect2.right - _this.fd + _this.mouseGap;
 				_this.resizeTW = rect2.right - rect1.left
 				_this.firstLeft = rect1.left;
-
       		}
+      	});
+	}
+	
+	//i: index,		n: item
+	thResizer.prototype.fnBindMouseLeave_th = function( _this, i, n )
+	{
+		$(n).bind("mouseleave",function(e){
+	      		
+      		//清空之前设置的相关标识类
+			$(this).parent().children().removeClass("first-resize-th").removeClass("second-resize-th");
       	});
 	}
 		
 	//绑定鼠标相关事件 （mousemove、mousedown）
 	thResizer.prototype.fnBindMouseEvents_th = function( _this )
-	{		
-		$(_this.objStr).each(function(i,n){
+	{
+		//去除所有未显示的列，并对显示的列进行相关操作
+		var ths = $.grep($(_this.objStr), function(m,j){
 			
-			_this.fnBindMouseMove_th(_this, i, n);
-	    			
-	      	_this.fnBindMouseDown_th(_this, i, n);
+			( m.style.display !== "none" ) &&
+			
+			//绑定th的mousemove事件
+			( _this.fnBindMouseMove_th(_this, j, m),
+			
+				//绑定th的mousedown事件
+				_this.fnBindMouseDown_th(_this, j, m),
+			
+				//绑定th的mouseleave事件
+				_this.fnBindMouseLeave_th(_this, j, m)
+				)
 		});
 	}
 		

@@ -57,11 +57,6 @@
 			
 			_this.fnBindMouseMove_body( _this );		//绑定body的mousemove事件
 		}
-		
-		//每隔500毫秒就循环执行该函数，目的是解决点击查询之后，表格变化了就不能拖拽表头改变列宽的bug
-		setTimeout(function(){
-			_this.init( _this );		//递归调用
-		},500);
 	}
 	
 	//获取所有可见列的下标
@@ -266,5 +261,10 @@
 		
         return result || this;
     };
+    
+    //实例化thResizer对象，如下写法可应用于表格元素变化的场景，这样，就算刷新表格，也同样可以初始化表头相关事件
+    $(document).delegate("table.datalist", "mouseover", function(){
+    	$(this).thResizer();
+    });
 	
 })(jQuery, window, document);

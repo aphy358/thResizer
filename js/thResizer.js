@@ -45,10 +45,8 @@
 	//初始化
 	thResizer.prototype.init = function( _this )
 	{
-		if( $(_this.objStr).length > 0 && !$(_this.objStr).parent().hasClass("thResizable") && !$("body").hasClass("th-resizing") ){
+		if( $(_this.objStr).length > 0 && !$("body").hasClass("th-resizing") ){
 				
-			$(_this.objStr).parent().addClass("thResizable");
-			
 			_this.fnGetVisible_th( _this );				//获取所有可见列的下标
 			
 			_this.fnBindMouseEvents_th( _this );		//绑定鼠标相关事件 （mousemove、mousedown）
@@ -262,9 +260,9 @@
         return result || this;
     };
     
-    //实例化thResizer对象，如下写法可应用于表格元素变化的场景，这样，就算刷新表格，也同样可以初始化表头相关事件
-    $(document).delegate("table.datalist", "mouseover", function(){
+    //实例化thResizer对象
+    $(document).delegate("table.datalist", "mouseenter", function(){
     	$(this).thResizer();
     });
-	
+    
 })(jQuery, window, document);
